@@ -1,0 +1,40 @@
+
+<div class="dashboard">
+  <header>
+    <h1>InfraWatch</h1>
+    <p>Plataforma de monitoreo de infraestructura informática</p>
+  </header>
+
+  <main>
+    <h2>Panel de monitoreo</h2>
+    <p>Servidor: PC Windows de pruebas</p>
+
+    @if (error) {
+      <p class="error">{{ error }}</p>
+    }
+
+    <section class="metricas">
+      <div class="tarjeta">
+        <h3>CPU</h3>
+        <p>{{ ultimaMetrica?.usoCpu ?? '--' }} %</p>
+      </div>
+
+      <div class="tarjeta">
+        <h3>Memoria RAM</h3>
+        <p>{{ ultimaMetrica?.usoMemoria ?? '--' }} %</p>
+      </div>
+
+      <div class="tarjeta">
+        <h3>Disco</h3>
+        <p>{{ ultimaMetrica?.usoDisco ?? '--' }} %</p>
+      </div>
+    </section>
+
+    @if (ultimaMetrica) {
+      <p>
+        Última medición:
+        {{ ultimaMetrica.fechaRegistro }}
+      </p>
+    }
+  </main>
+</div>

@@ -1,0 +1,52 @@
+
+.dashboard {
+  min-height: 100vh;
+  background-color: #f4f6fa;
+  font-family: Arial, sans-serif;
+  color: #1e293b;
+}
+
+header {
+  background-color: #14213d;
+  color: white;
+  padding: 25px 40px;
+}
+
+header h1 {
+  margin: 0;
+}
+
+header p {
+  margin-bottom: 0;
+  color: #cbd5e1;
+}
+
+main {
+  padding: 40px;
+}
+
+.metricas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.tarjeta {
+  background-color: white;
+  padding: 25px;
+  border-radius: 12px;
+  min-width: 180px;
+  flex: 1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.tarjeta h3 {
+  margin-top: 0;
+}
+
+.tarjeta p {
+  font-size: 32px;
+  font-weight: bold;
+  color: #2563eb;
+}
