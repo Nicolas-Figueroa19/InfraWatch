@@ -32,13 +32,17 @@ main {
   margin-top: 30px;
 }
 
-.tarjeta {
+.tarjeta,
+.grafico-tarjeta {
   background-color: white;
   padding: 25px;
   border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.tarjeta {
   min-width: 180px;
   flex: 1;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .tarjeta h3 {
@@ -49,4 +53,89 @@ main {
   font-size: 32px;
   font-weight: bold;
   color: #2563eb;
+}
+
+.ultima-medicion {
+  margin-top: 25px;
+  color: #64748b;
+}
+
+.historial {
+  margin-top: 45px;
+}
+
+.historial > p {
+  color: #64748b;
+}
+
+.graficos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+  gap: 20px;
+  margin-top: 25px;
+}
+
+.grafico-tarjeta h3 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.grafico-contenedor {
+  position: relative;
+  height: 280px;
+  width: 100%;
+}
+
+.error {
+  color: #dc2626;
+  font-weight: bold;
+}
+
+.estado-servidor {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background-color: #e2e8f0;
+  color: #475569;
+  font-weight: 600;
+}
+
+.estado-punto {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #94a3b8;
+}
+
+.estado-servidor.conectado {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.estado-servidor.conectado .estado-punto {
+  background-color: #22c55e;
+}
+
+.estado-servidor.desconectado {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.estado-servidor.desconectado .estado-punto {
+  background-color: #ef4444;
+}
+
+@media (max-width: 600px) {
+  header,
+  main {
+    padding: 20px;
+  }
+
+  .tarjeta,
+  .grafico-tarjeta {
+    padding: 20px;
+  }
 }

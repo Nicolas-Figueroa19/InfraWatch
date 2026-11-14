@@ -7,7 +7,6 @@ import cl.infrawatch.backend.service.MetricaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +25,11 @@ public class MetricaController {
     @GetMapping
     public List<Metrica> listar() {
         return metricaService.listar();
+    }
+
+    @GetMapping("/servidor/{servidorId}")
+    public List<Metrica> listarPorServidor(@PathVariable Long servidorId) {
+        return metricaService.listarPorServidor(servidorId);
     }
 
     @GetMapping("/{id}")

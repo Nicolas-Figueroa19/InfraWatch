@@ -7,7 +7,20 @@
 
   <main>
     <h2>Panel de monitoreo</h2>
+
     <p>Servidor: PC Windows de pruebas</p>
+
+    <div
+      class="estado-servidor"
+      [class.conectado]="estadoServidor === 'Conectado'"
+      [class.desconectado]="estadoServidor === 'Sin conexión'">
+
+      <span class="estado-punto"></span>
+
+      <span>
+        Estado del servidor: {{ estadoServidor }}
+      </span>
+    </div>
 
     @if (error) {
       <p class="error">{{ error }}</p>
@@ -31,10 +44,56 @@
     </section>
 
     @if (ultimaMetrica) {
-      <p>
+      <p class="ultima-medicion">
         Última medición:
-        {{ ultimaMetrica.fechaRegistro }}
+        {{ ultimaMetrica.fechaRegistro | date:'dd/MM/yyyy HH:mm:ss' }}
       </p>
     }
+
+    <section class="historial">
+      <h2>Historial de rendimiento</h2>
+      <p>Últimas 50 mediciones registradas</p>
+
+      <div class="graficos">
+        <div class="grafico-tarjeta">
+          <h3>Uso de CPU</h3>
+
+          <div class="grafico-contenedor">
+            <canvas
+              baseChart
+              [data]="graficoCpu"
+              [options]="opcionesGrafico"
+              [type]="'line'">
+            </canvas>
+          </div>
+        </div>
+
+        <div class="grafico-tarjeta">
+          <h3>Uso de memoria RAM</h3>
+
+          <div class="grafico-contenedor">
+            <canvas
+              baseChart
+              [data]="graficoRam"
+              [options]="opcionesGrafico"
+              [type]="'line'">
+            </canvas>
+          </div>
+        </div>
+
+        <div class="grafico-tarjeta">
+          <h3>Uso de disco</h3>
+
+          <div class="grafico-contenedor">
+            <canvas
+              baseChart
+              [data]="graficoDisco"
+              [options]="opcionesGrafico"
+              [type]="'line'">
+            </canvas>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 </div>

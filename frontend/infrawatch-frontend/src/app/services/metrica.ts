@@ -27,4 +27,10 @@ export class MetricaService {
   listar(): Observable<Metrica[]> {
     return this.http.get<Metrica[]>(this.apiUrl);
   }
+
+  listarPorServidor(servidorId: number): Observable<Metrica[]> {
+    return this.http.get<Metrica[]>(
+      `${this.apiUrl}/servidor/${servidorId}`
+    );
+  }
 }

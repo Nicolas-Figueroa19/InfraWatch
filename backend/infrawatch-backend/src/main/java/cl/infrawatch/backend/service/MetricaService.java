@@ -33,6 +33,10 @@ public class MetricaService {
         return metricaRepository.findById(id);
     }
 
+    public List<Metrica> listarPorServidor(Long servidorId) {
+        return metricaRepository.findByServidorIdOrderByFechaRegistroDesc(servidorId);
+    }
+
     public Optional<Metrica> crear(Metrica metrica) {
 
         if (metrica.getServidor() == null ||
