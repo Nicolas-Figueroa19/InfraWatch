@@ -50,6 +50,100 @@
       </p>
     }
 
+    <section class="alertas">
+      <div class="alertas-encabezado">
+        <h2>Alertas del servidor</h2>
+
+        <span
+          class="contador-alertas"
+          [class.con-alertas]="alertasActivas.length > 0">
+          {{ alertasActivas.length }} activas
+        </span>
+      </div>
+
+      @if (errorAlertas) {
+        <p class="error">{{ errorAlertas }}</p>
+      } @else {
+        @if (alertasActivas.length === 0) {
+          <div class="sin-alertas">
+            <span class="sin-alertas-icono">✓</span>
+            <div>
+              <h3>Sin alertas activas</h3>
+              <p>No existen incidentes activos para este servidor.</p>
+            </div>
+          </div>
+        } @else {
+          <div class="lista-alertas">
+            @for (alerta of alertasActivas; track alerta.id) {
+              <div
+                class="alerta-tarjeta"
+                [class.alerta-critica]="alerta.nivel === 'CRITICO'"
+                [class.alerta-advertencia]="alerta.nivel === 'ADVERTENCIA'">
+
+                <div class="alerta-superior">
+                  <h3>{{ alerta.recurso }} - {{ alerta.valor }} %</h3>
+
+                  <span
+                    class="alerta-nivel"
+                    [class.nivel-critico]="alerta.nivel === 'CRITICO'"
+                    [class.nivel-advertencia]="alerta.nivel === 'ADVERTENCIA'">
+                    {{ alerta.nivel === 'CRITICO' ? 'Crítico' : 'Advertencia' }}
+                  </span>
+                </div>
+
+                <p>{{ alerta.mensaje }}</p>
+
+                <span class="alerta-fecha">
+                  Detectada:
+                  {{ alerta.fechaCreacion | date:'dd/MM/yyyy HH:mm:ss' }}
+                </span>
+              </div>
+            }
+          </div>
+        }
+      }
+
+      <div class="historial-alertas">
+        <h3>Historial de incidentes</h3>
+
+        @if (errorAlertas) {
+          <p>No se pudo consultar el historial.</p>
+        } @else if (historialAlertas.length === 0) {
+          <p class="historial-vacio">
+            Todavía no hay incidentes resueltos.
+          </p>
+        } @else {
+          <div class="lista-alertas">
+            @for (alerta of historialAlertas; track alerta.id) {
+              <div class="alerta-tarjeta alerta-resuelta">
+                <div class="alerta-superior">
+                  <h3>{{ alerta.recurso }} - {{ alerta.valor }} %</h3>
+
+                  <span class="alerta-nivel nivel-resuelto">
+                    Resuelta
+                  </span>
+                </div>
+
+                <p>{{ alerta.mensaje }}</p>
+
+                <span class="alerta-fecha">
+                  Detectada:
+                  {{ alerta.fechaCreacion | date:'dd/MM/yyyy HH:mm:ss' }}
+                </span>
+
+                @if (alerta.fechaResolucion) {
+                  <span class="alerta-fecha">
+                    Resuelta:
+                    {{ alerta.fechaResolucion | date:'dd/MM/yyyy HH:mm:ss' }}
+                  </span>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </section>
+
     <section class="historial">
       <h2>Historial de rendimiento</h2>
       <p>Últimas 50 mediciones registradas</p>

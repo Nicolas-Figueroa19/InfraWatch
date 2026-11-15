@@ -7,6 +7,7 @@ import cl.infrawatch.backend.repository.MetricaRepository;
 import cl.infrawatch.backend.repository.ServidorRepository;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,13 +17,16 @@ public class MetricaService {
 
     private final MetricaRepository metricaRepository;
     private final ServidorRepository servidorRepository;
+    private final AlertaService alertaService;
 
     public MetricaService(
             MetricaRepository metricaRepository,
-            ServidorRepository servidorRepository) {
+            ServidorRepository servidorRepository,
+            AlertaService alertaService) {
 
         this.metricaRepository = metricaRepository;
         this.servidorRepository = servidorRepository;
+        this.alertaService = alertaService;
     }
 
     public List<Metrica> listar() {
@@ -34,12 +38,15 @@ public class MetricaService {
     }
 
     public List<Metrica> listarPorServidor(Long servidorId) {
-        return metricaRepository.findByServidorIdOrderByFechaRegistroDesc(servidorId);
+        return metricaRepository
+                .findByServidorIdOrderByFechaRegistroDesc(servidorId);
     }
 
+    @Transactional
     public Optional<Metrica> crear(Metrica metrica) {
 
-        if (metrica.getServidor() == null ||
+        if (metrica == null ||
+                metrica.getServidor() == null ||
                 metrica.getServidor().getId() == null) {
 
             throw new IllegalArgumentException(
@@ -56,6 +63,10 @@ public class MetricaService {
 
         metrica.setServidor(servidor.get());
 
-        return Optional.of(metricaRepository.save(metrica));
+        Metrica metricaGuardada = metricaRepository.save(metrica);
+
+        alertaService.evaluarMetrica(metricaGuardada);
+
+        return Optional.of(metricaGuardada);
     }
 }

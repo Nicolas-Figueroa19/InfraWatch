@@ -12,6 +12,7 @@ import { interval, Subscription } from 'rxjs';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration } from 'chart.js';
 import { Metrica, MetricaService } from './services/metrica';
+import { Alerta, AlertaService } from './services/alerta';
 
 @Component({
   selector: 'app-root',
@@ -22,13 +23,19 @@ import { Metrica, MetricaService } from './services/metrica';
 export class App implements OnInit, OnDestroy {
 
   private metricaService = inject(MetricaService);
+  private alertaService = inject(AlertaService);
   private cdr = inject(ChangeDetectorRef);
 
   ultimaMetrica: Metrica | null = null;
 
+  alertas: Alerta[] = [];
+  alertasActivas: Alerta[] = [];
+  historialAlertas: Alerta[] = [];
+
   estadoServidor = 'Sin datos';
 
   error = '';
+  errorAlertas = '';
 
   private actualizacion?: Subscription;
 
@@ -91,10 +98,12 @@ export class App implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.cargarMetricas();
+    this.cargarAlertas();
 
     this.actualizacion = interval(30000).subscribe(() => {
       this.actualizarEstadoServidor();
       this.cargarMetricas();
+      this.cargarAlertas();
     });
   }
 
@@ -152,6 +161,38 @@ export class App implements OnInit, OnDestroy {
         this.error = 'No se pudieron cargar las métricas.';
 
         this.estadoServidor = 'Sin conexión';
+
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  cargarAlertas(): void {
+    this.alertaService.listarPorServidor(2).subscribe({
+      next: (alertas) => {
+        this.alertas = [...alertas].sort(
+          (a, b) =>
+            new Date(b.fechaCreacion).getTime() -
+            new Date(a.fechaCreacion).getTime()
+        );
+
+        this.alertasActivas = this.alertas.filter(
+          alerta => alerta.activa
+        );
+
+        this.historialAlertas = this.alertas.filter(
+          alerta => !alerta.activa
+        );
+
+        this.errorAlertas = '';
+
+        this.cdr.detectChanges();
+      },
+
+      error: (err) => {
+        console.error('Error al obtener alertas:', err);
+
+        this.errorAlertas = 'No se pudieron cargar las alertas.';
 
         this.cdr.detectChanges();
       }
